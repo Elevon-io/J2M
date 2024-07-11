@@ -228,7 +228,7 @@ String.prototype.to_jira_nested_list = function () {
 
                     const indentRange = indentDistance ?? 1;
 
-                    // remove others indents
+                    // remove other indents
                     buffer = buffer.slice(0, indent);
                     // add new char to buffer
                     buffer[indent] = line.charAt(0);

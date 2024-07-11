@@ -113,7 +113,7 @@ describe('to_jira', () => {
         );
         jira.should.eql('# Foo\n# Bar\n# Baz\n## FooBar\n## BarBaz\n### FooBarBaz\n# Starting Over');
     });
-    it('should convert multi intended list', () => {
+    it('should convert multi indented list', () => {
         const jira = j2m.to_jira(
             '1. Foo\n1. Bar\n1. Baz\n   * FooBar\n     * FooBarFoo\n     * FooBarBaz\n   * BarBaz\n     * FooBarBaz\n1. Starting Over'
         );
@@ -121,7 +121,7 @@ describe('to_jira', () => {
             '# Foo\n# Bar\n# Baz\n#* FooBar\n#** FooBarFoo\n#** FooBarBaz\n#* BarBaz\n#** FooBarBaz\n# Starting Over'
         );
     });
-    it('should convert multi intended list with different spaces for intend', () => {
+    it('should convert multi indented list with different spaces for indent', () => {
         const jira = j2m.to_jira(
             '1.  **Num 1**\n    *   Bul 1.1\n        *   Bul 1.1.1\n    *   Bul 1.2\n    *   Bul 1.3\n        *   Bul 1.3.1\n        *   Bul 1.3.2\n2.  **Num 2:**'
         );
