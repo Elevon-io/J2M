@@ -95,8 +95,16 @@ describe('to_jira', () => {
         const jira = j2m.to_jira('> This is a long blockquote type thingy that needs to be converted.');
         jira.should.eql('bq. This is a long blockquote type thingy that needs to be converted.');
     });
-    it('should convert un-ordered lists properly', () => {
+    it('should convert un-ordered lists properly with "*" symbol', () => {
         const jira = j2m.to_jira('* Foo\n* Bar\n* Baz\n  * FooBar\n  * BarBaz\n    * FooBarBaz\n* Starting Over');
+        jira.should.eql('* Foo\n* Bar\n* Baz\n** FooBar\n** BarBaz\n*** FooBarBaz\n* Starting Over');
+    });
+    it('should convert un-ordered lists properly with "-" symbol', () => {
+        const jira = j2m.to_jira('- Foo\n- Bar\n- Baz\n  - FooBar\n  - BarBaz\n    - FooBarBaz\n- Starting Over');
+        jira.should.eql('* Foo\n* Bar\n* Baz\n** FooBar\n** BarBaz\n*** FooBarBaz\n* Starting Over');
+    });
+    it('should convert un-ordered lists properly with "+" symbol', () => {
+        const jira = j2m.to_jira('+ Foo\n+ Bar\n+ Baz\n  + FooBar\n  + BarBaz\n    + FooBarBaz\n+ Starting Over');
         jira.should.eql('* Foo\n* Bar\n* Baz\n** FooBar\n** BarBaz\n*** FooBarBaz\n* Starting Over');
     });
     it('should convert ordered lists properly', () => {
@@ -104,6 +112,22 @@ describe('to_jira', () => {
             '1. Foo\n1. Bar\n1. Baz\n   1. FooBar\n   1. BarBaz\n      1. FooBarBaz\n1. Starting Over'
         );
         jira.should.eql('# Foo\n# Bar\n# Baz\n## FooBar\n## BarBaz\n### FooBarBaz\n# Starting Over');
+    });
+    it('should convert multi indented list', () => {
+        const jira = j2m.to_jira(
+            '1. Foo\n1. Bar\n1. Baz\n   * FooBar\n     * FooBarFoo\n     * FooBarBaz\n   * BarBaz\n     * FooBarBaz\n1. Starting Over'
+        );
+        jira.should.eql(
+            '# Foo\n# Bar\n# Baz\n#* FooBar\n#** FooBarFoo\n#** FooBarBaz\n#* BarBaz\n#** FooBarBaz\n# Starting Over'
+        );
+    });
+    it('should convert multi indented list with different spaces for indent', () => {
+        const jira = j2m.to_jira(
+            '1.  **Num 1**\n    *   Bul 1.1\n        *   Bul 1.1.1\n    *   Bul 1.2\n    *   Bul 1.3\n        *   Bul 1.3.1\n        *   Bul 1.3.2\n2.  **Num 2:**'
+        );
+        jira.should.eql(
+            '# *Num 1*\n#* Bul 1.1\n#** Bul 1.1.1\n#* Bul 1.2\n#* Bul 1.3\n#** Bul 1.3.1\n#** Bul 1.3.2\n# *Num 2:*'
+        );
     });
     it('should handle bold AND italic (combined) correctly', () => {
         const jira = j2m.to_jira('This is ***emphatically bold***!');
@@ -113,7 +137,7 @@ describe('to_jira', () => {
         const jira = j2m.to_jira('* This is not bold!\n  * This is **bold**.');
         jira.should.eql('* This is not bold!\n** This is *bold*.');
     });
-    it('should be able to handle a complicated multi-line markdown string and convert it to markdown', () => {
+    it('should be able to handle a complicated multi-line markdown string and convert it to jira wiki', () => {
         const jiraStr = fs.readFileSync(path.resolve(__dirname, 'test.jira'), 'utf8');
         const mdStr = fs.readFileSync(path.resolve(__dirname, 'test.md'), 'utf8');
         const jira = j2m.to_jira(mdStr);

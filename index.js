@@ -163,13 +163,15 @@ class J2M {
                         .fill('#')
                         .join('')} `;
                 })
-                // Un-Ordered Lists
-                .replace(/^([ \t]*)\*\s+/gm, (match, spaces) => {
-                    return `${Array(Math.floor(spaces.length / 2 + 1))
+                // Un-Ordered Lists (* or - or +)
+                .replace(/^([ \t]*)[\*\-\+]\s+/gm, (match, spaces) => {
+                    const len = spaces.length % 2 !== 0 ? spaces.length - 1 : spaces.length;
+                    return `${Array(Math.floor(len / 2 + 1))
                         .fill('*')
                         .join('')} `;
                 })
-                // Headers (h1 or h2) (lines "underlined" by ---- or =====)
+                // Nested Lists
+                .to_jira_nested_list()
                 // Citations, Inserts, Subscripts, Superscripts, and Strikethroughs
                 .replace(new RegExp(`<(${Object.keys(map).join('|')})>(.*?)</\\1>`, 'g'), (match, from, content) => {
                     const to = map[from];
@@ -198,5 +200,60 @@ class J2M {
         );
     }
 }
+
+String.prototype.to_jira_nested_list = function () {
+    const lineFormatter = function (str) {
+        const arr = str.split('\n');
+
+        let buffer = [];
+        let indentDistance;
+
+        arr.forEach((line, index) => {
+            if (!(line.startsWith('#') || line.startsWith('*'))) {
+                buffer = [];
+            } else {
+                arr[index] = line.replace(/^([\*#]+\s)/g, (match) => {
+                    const spaces = match.replace(/[\*#]*/, '');
+                    match = match.trim();
+
+                    let result = '';
+                    let leftChars = match;
+                    // indent from 0
+                    const indent = Math.floor(match.length / 2);
+
+                    // set indentDistance (can be 1 or 2)
+                    if (indent > 0 && !indentDistance) {
+                        indentDistance = match.length - buffer.length;
+                    }
+
+                    const indentRange = indentDistance ?? 1;
+
+                    // remove other indents
+                    buffer = buffer.slice(0, indent);
+                    // add new char to buffer
+                    buffer[indent] = line.charAt(0);
+                    // define indentRange
+
+                    // apply transformation
+                    for (let i = 0; i < indent; i++) {
+                        if (buffer[i]) {
+                            result += buffer[i];
+                        }
+                        leftChars = leftChars.slice(indentRange);
+                    }
+                    // add remaining chars
+                    result += leftChars;
+
+                    return result + spaces;
+                });
+            }
+        });
+        return arr.join('\n');
+    };
+
+    return this.split('\n\n')
+        .map((block) => lineFormatter(block))
+        .join('\n\n');
+};
 
 module.exports = J2M;
