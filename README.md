@@ -1,39 +1,42 @@
 # jira2md
 
 ## JIRA to MarkDown text format converter
+
 Convert from JIRA text formatting to GitHub Flavored MarkDown and back again. Also allows for both to be converted to HTML.
 
 ## Credits
+
 This module was heavily inspired by the J2M project by Fokke Zandbergen (http://j2m.fokkezb.nl/). Major credit to Fokke (and other contributors) for establishing a lot of the fundamental RexExp patterns for this module to work.
 
 ## Installation
+
 ```
-npm install jira2md
+npm install j2md
 ```
 
 ## Supported Conversions
+
 NOTE: All conversion work bi-directionally (from jira to markdown and back again).
 
-* Headers (H1-H6)
-* Bold
-* Italic
-* Bold + Italic
-* Un-ordered lists
-* Ordered lists (with help from [aarbanas](https://github.com/aarbanas))
-* Programming Language-specific code blocks (with help from herbert-venancio)
-* Inline preformatted text spans
-* Un-named links
-* Named links
-* Monospaced Text
-* ~~Citations~~ (Removed in 2.0.0)
-* Strikethroughs
-* Inserts
-* Superscripts
-* Subscripts
-* Single-paragraph blockquotes
-* Tables (thanks to erykwarren)
-* Panels (thanks to erykwarren)
-
+-   Headers (H1-H6)
+-   Bold
+-   Italic
+-   Bold + Italic
+-   Un-ordered lists
+-   Ordered lists (with help from [aarbanas](https://github.com/aarbanas))
+-   Programming Language-specific code blocks (with help from herbert-venancio)
+-   Inline preformatted text spans
+-   Un-named links
+-   Named links
+-   Monospaced Text
+-   ~~Citations~~ (Removed in 2.0.0)
+-   Strikethroughs
+-   Inserts
+-   Superscripts
+-   Subscripts
+-   Single-paragraph blockquotes
+-   Tables (thanks to erykwarren)
+-   Panels (thanks to erykwarren)
 
 ## How to Use
 
