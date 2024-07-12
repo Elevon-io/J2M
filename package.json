@@ -1,16 +1,16 @@
 {
-    "name": "jira2md",
-    "version": "3.0.1",
+    "name": "j2md",
+    "version": "1.0.0",
     "keywords": [
         "jira",
         "atlassian",
         "wiki",
         "markdown"
     ],
-    "homepage": "http://github.com/kylefarris/J2M.git",
+    "homepage": "https://github.com/Elevon-io/J2M.git",
     "repository": {
         "type": "git",
-        "url": "http://github.com/kylefarris/J2M.git"
+        "url": "https://github.com/Elevon-io/J2M.git"
     },
     "description": "JIRA to MarkDown text format converter.",
     "main": "index.js",
@@ -32,6 +32,7 @@
     },
     "author": "Fokke Zandbergen <mail@fokkezb.nl>",
     "contributors": [
+        "Michal Toldy <michal.toldy@elevon.io>",
         "Kyle Farris <kyle@chomponllc.com>",
         "Eryk Warren <https://github.com/erykwarren>",
         "Andrej Arbanas <https://github.com/aarbanas>",
